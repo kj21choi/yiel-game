@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coming Home — 주사위 보드게임</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================================================================
+       설정 화면 (플레이어 수 / 이름 입력 / 캐릭터 미리보기)
+       캐릭터는 원본 그림(characters.png)을 crop 한 img/char-*.png 스프라이트를
+       script.js 에서 <img> 로 삽입한다.
+  ==================================================================== -->
+  <section id="setup-screen" class="screen">
+    <div class="setup-card">
+      <h1 class="game-title">Coming Home</h1>
+      <p class="subtitle">👒 피크닉을 마치고 아늑한 오두막집으로 돌아가는 주사위 보드게임 🏠</p>
+
+      <div class="setup-block">
+        <label class="setup-label">플레이어 수</label>
+        <div id="count-picker" class="count-picker">
+          <button class="count-btn" data-count="1">1명</button>
+          <button class="count-btn" data-count="2">2명</button>
+          <button class="count-btn" data-count="3">3명</button>
+          <button class="count-btn" data-count="4">4명</button>
+        </div>
+      </div>
+
+      <div class="setup-block">
+        <label class="setup-label">플레이어 이름 &amp; 캐릭터</label>
+        <div id="name-inputs" class="name-inputs"><!-- JS 가 동적으로 채움 --></div>
+      </div>
+
+      <button id="start-btn" class="primary-btn">게임 시작</button>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       게임 화면
+  ==================================================================== -->
+  <section id="game-screen" class="screen hidden">
+    <header class="game-header">
+      <h1 class="game-title small">Coming Home</h1>
+      <!-- 상단 중앙: 현재 상태 배너 (가장 최근 진행 상황만 직관적으로 표시) -->
+      <div id="status-banner" class="status-banner">게임을 시작하세요!</div>
+      <div id="current-turn" class="current-turn"><!-- 현재 턴 표시 --></div>
+    </header>
+
+    <div class="game-layout">
+      <!-- 보드 영역 -->
+      <div class="board-wrap">
+        <div id="board" class="board">
+          <svg id="board-svg" viewBox="0 0 1200 840" preserveAspectRatio="xMidYMid meet" aria-label="게임 보드"></svg>
+          <div id="pieces" class="pieces-layer"><!-- 캐릭터 말 (JS) --></div>
+        </div>
+        <!-- 칸 범례 -->
+        <div class="board-legend">
+          <div class="legend-item legend-trap">
+            <span class="legend-icon">🕳️</span>
+            <span class="legend-name">함정</span>
+            <span class="legend-desc">3칸 후퇴 / 쉬기 / 아이템 잃기</span>
+          </div>
+          <div class="legend-item legend-bonus">
+            <span class="legend-icon">⭐</span>
+            <span class="legend-name">보너스</span>
+            <span class="legend-desc">3칸 전진 / 한 번 더 / 아이템 획득</span>
+          </div>
+          <div class="legend-item legend-item-tile">
+            <span class="legend-icon">🎁</span>
+            <span class="legend-name">아이템</span>
+            <span class="legend-desc">랜덤 아이템 획득</span>
+          </div>
+          <div class="legend-item legend-warp">
+            <span class="legend-icon">🌀</span>
+            <span class="legend-name">워프</span>
+            <span class="legend-desc">지정 칸으로 순간 이동</span>
+          </div>
+          <div class="legend-item legend-start">
+            <span class="legend-icon">👒</span>
+            <span class="legend-name">출발</span>
+            <span class="legend-desc">피크닉</span>
+          </div>
+          <div class="legend-item legend-goal">
+            <span class="legend-icon">🏠</span>
+            <span class="legend-name">도착</span>
+            <span class="legend-desc">아늑한 오두막집</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 사이드 패널 -->
+      <aside class="side-panel">
+        <div class="dice-box">
+          <div id="dice" class="dice" aria-label="주사위"></div>
+          <div id="dice-chooser" class="dice-chooser hidden"></div>
+          <button id="roll-btn" class="primary-btn">🎲 주사위 굴리기</button>
+          <button id="restart-btn" class="ghost-btn">↻ 재시작</button>
+        </div>
+
+        <div class="panel-section">
+          <h2 class="panel-title">플레이어</h2>
+          <div id="players-panel" class="players-panel"><!-- JS --></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 승리 오버레이 -->
+  <div id="win-overlay" class="win-overlay hidden">
+    <div id="confetti" class="confetti"></div>
+    <div class="win-card">
+      <div class="win-emoji">🏆</div>
+      <h2 id="win-message" class="win-message"></h2>
+      <p class="win-sub">무사히 집으로 돌아왔어요!</p>
+      <button id="play-again-btn" class="primary-btn">다시 플레이</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
